@@ -14,8 +14,17 @@ type User {
   name: String!
 }
 
+
+type Pokemon {
+  id: ID!
+  name: String!
+  height: Int
+  weight: Int
+}
+
 type Query {
-  todos: [Todo!]!
+  pokemon(id: ID!): Pokemon
+  pokemons(limit: Int, offset: Int): [Pokemon!]!
 }
 
 input NewTodo {
