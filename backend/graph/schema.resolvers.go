@@ -11,21 +11,17 @@ import (
 	"github.com/kenya6565/pokemon_pokedex/graph/model"
 )
 
-// CreateTodo is the resolver for the createTodo field.
-func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) (*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: CreateTodo - createTodo"))
+// Pokemon is the resolver for the pokemon field.
+func (r *queryResolver) Pokemon(ctx context.Context, id string) (*model.Pokemon, error) {
+	panic(fmt.Errorf("not implemented: Pokemon - pokemon"))
 }
 
-// Todos is the resolver for the todos field.
-func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
-	panic(fmt.Errorf("not implemented: Todos - todos"))
+// Pokemons is the resolver for the pokemons field.
+func (r *queryResolver) Pokemons(ctx context.Context, limit *int, offset *int) ([]*model.Pokemon, error) {
+	panic(fmt.Errorf("not implemented: Pokemons - pokemons"))
 }
-
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
 
 // Query returns QueryResolver implementation.
 func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
 
-type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
