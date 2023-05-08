@@ -6,7 +6,11 @@ package graph
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strconv"
 
 	"github.com/kenya6565/pokemon_pokedex/graph/model"
 )
@@ -18,24 +22,46 @@ func (r *queryResolver) Pokemon(ctx context.Context, id string) (*model.Pokemon,
 
 // Pokemons is the resolver for the pokemons field.
 func (r *queryResolver) Pokemons(ctx context.Context, limit *int, offset *int) ([]*model.Pokemon, error) {
-	height := 40
-	weight := 60
-
-	pokemon := []*model.Pokemon{
-		&model.Pokemon{
-			ID:     "1",
-			Name:   "ピカチュウ",
-			Height: &height,
-			Weight: &weight,
-		},
-		&model.Pokemon{
-			ID:     "2",
-			Name:   "ゼニガメ",
-			Height: &height,
-			Weight: &weight,
-		},
+	if limit == nil {
+		defaultLimit := 20
+		limit = &defaultLimit
 	}
-	return pokemon, nil
+	if offset == nil {
+		defaultOffset := 0
+		offset = &defaultOffset
+	}
+
+	url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon?limit=%d&offset=%d", *limit, *offset)
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var data map[string]interface{}
+	if err := json.Unmarshal(body, &data); err != nil {
+		return nil, err
+	}
+
+	// make list from json data including pokeAPI
+	results := data["results"].([]interface{})
+	pokemons := make([]*model.Pokemon, len(results))
+	for i, r := range results {
+		result := r.(map[string]interface{})
+		// convert id type into int with atrconv.Atoi
+		id, _ := strconv.Atoi(result["url"].(string)[34 : len(result["url"].(string))-1])
+		pokemons[i] = &model.Pokemon{
+			ID:   fmt.Sprint(id),
+			Name: result["name"].(string),
+		}
+	}
+
+	return pokemons, nil
 }
 
 // Query returns QueryResolver implementation.
