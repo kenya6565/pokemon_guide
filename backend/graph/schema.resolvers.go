@@ -18,7 +18,24 @@ func (r *queryResolver) Pokemon(ctx context.Context, id string) (*model.Pokemon,
 
 // Pokemons is the resolver for the pokemons field.
 func (r *queryResolver) Pokemons(ctx context.Context, limit *int, offset *int) ([]*model.Pokemon, error) {
-	panic(fmt.Errorf("not implemented: Pokemons - pokemons"))
+	height := 40
+	weight := 60
+
+	pokemon := []*model.Pokemon{
+		&model.Pokemon{
+			ID:     "1",
+			Name:   "ピカチュウ",
+			Height: &height,
+			Weight: &weight,
+		},
+		&model.Pokemon{
+			ID:     "2",
+			Name:   "ゼニガメ",
+			Height: &height,
+			Weight: &weight,
+		},
+	}
+	return pokemon, nil
 }
 
 // Query returns QueryResolver implementation.
