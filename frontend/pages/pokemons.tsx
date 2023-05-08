@@ -1,4 +1,4 @@
-import { GetPokemons } from '../src/generated/graphql';
+import { GetPokemonsQuery } from '../src/generated/graphql';
 import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
 
@@ -12,7 +12,7 @@ const GET_POKEMONS = gql`
 `;
 
 const PokemonsPage = () => {
-  const { loading, error, data } = useQuery<GetPokemons>(GET_POKEMONS, {
+  const { loading, error, data } = useQuery<GetPokemonsQuery>(GET_POKEMONS, {
     variables: { limit: 20, offset: 0 },
   });
 
