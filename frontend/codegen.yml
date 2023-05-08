@@ -1,4 +1,5 @@
 schema: "../backend/graph/schema.graphqls"
+documents: ["./graphql/*.graphql"]
 generates:
   src/generated/graphql.tsx:
     plugins:

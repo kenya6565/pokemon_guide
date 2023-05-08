@@ -1,0 +1,6 @@
+query GetPokemons($limit: Int, $offset: Int) {
+  pokemons(limit: $limit, offset: $offset) {
+    id
+    name
+  }
+}
