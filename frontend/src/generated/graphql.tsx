@@ -19,6 +19,7 @@ export type Pokemon = {
   __typename?: 'Pokemon';
   height?: Maybe<Scalars['Int']>;
   id: Scalars['ID'];
+  image: Scalars['String'];
   name: Scalars['String'];
   weight?: Maybe<Scalars['Int']>;
 };

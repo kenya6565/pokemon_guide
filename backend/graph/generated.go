@@ -47,6 +47,7 @@ type ComplexityRoot struct {
 	Pokemon struct {
 		Height func(childComplexity int) int
 		ID     func(childComplexity int) int
+		Image  func(childComplexity int) int
 		Name   func(childComplexity int) int
 		Weight func(childComplexity int) int
 	}
@@ -90,6 +91,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Pokemon.ID(childComplexity), true
+
+	case "Pokemon.image":
+		if e.complexity.Pokemon.Image == nil {
+			break
+		}
+
+		return e.complexity.Pokemon.Image(childComplexity), true
 
 	case "Pokemon.name":
 		if e.complexity.Pokemon.Name == nil {
@@ -380,6 +388,50 @@ func (ec *executionContext) fieldContext_Pokemon_name(ctx context.Context, field
 	return fc, nil
 }
 
+func (ec *executionContext) _Pokemon_image(ctx context.Context, field graphql.CollectedField, obj *model.Pokemon) (ret graphql.Marshaler) {
+	fc, err := ec.fieldContext_Pokemon_image(ctx, field)
+	if err != nil {
+		return graphql.Null
+	}
+	ctx = graphql.WithFieldContext(ctx, fc)
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Image, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) fieldContext_Pokemon_image(ctx context.Context, field graphql.CollectedField) (fc *graphql.FieldContext, err error) {
+	fc = &graphql.FieldContext{
+		Object:     "Pokemon",
+		Field:      field,
+		IsMethod:   false,
+		IsResolver: false,
+		Child: func(ctx context.Context, field graphql.CollectedField) (*graphql.FieldContext, error) {
+			return nil, errors.New("field of type String does not have child fields")
+		},
+	}
+	return fc, nil
+}
+
 func (ec *executionContext) _Pokemon_height(ctx context.Context, field graphql.CollectedField, obj *model.Pokemon) (ret graphql.Marshaler) {
 	fc, err := ec.fieldContext_Pokemon_height(ctx, field)
 	if err != nil {
@@ -502,6 +554,8 @@ func (ec *executionContext) fieldContext_Query_pokemon(ctx context.Context, fiel
 				return ec.fieldContext_Pokemon_id(ctx, field)
 			case "name":
 				return ec.fieldContext_Pokemon_name(ctx, field)
+			case "image":
+				return ec.fieldContext_Pokemon_image(ctx, field)
 			case "height":
 				return ec.fieldContext_Pokemon_height(ctx, field)
 			case "weight":
@@ -567,6 +621,8 @@ func (ec *executionContext) fieldContext_Query_pokemons(ctx context.Context, fie
 				return ec.fieldContext_Pokemon_id(ctx, field)
 			case "name":
 				return ec.fieldContext_Pokemon_name(ctx, field)
+			case "image":
+				return ec.fieldContext_Pokemon_image(ctx, field)
 			case "height":
 				return ec.fieldContext_Pokemon_height(ctx, field)
 			case "weight":
@@ -2519,6 +2575,13 @@ func (ec *executionContext) _Pokemon(ctx context.Context, sel ast.SelectionSet, 
 		case "name":
 
 			out.Values[i] = ec._Pokemon_name(ctx, field, obj)
+
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "image":
+
+			out.Values[i] = ec._Pokemon_image(ctx, field, obj)
 
 			if out.Values[i] == graphql.Null {
 				invalids++
