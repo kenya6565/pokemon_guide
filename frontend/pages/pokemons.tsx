@@ -7,6 +7,7 @@ const GET_POKEMONS = gql`
     pokemons(limit: $limit, offset: $offset) {
       id
       name
+      image
     }
   }
 `;
