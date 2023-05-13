@@ -1,6 +1,8 @@
 import { GetPokemonsQuery } from '../src/generated/graphql';
 import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
+import Image from 'next/image';
+
 
 const GET_POKEMONS = gql`
   query GetPokemons($limit: Int, $offset: Int) {
@@ -25,9 +27,10 @@ const PokemonsPage = () => {
       <h1>Pokémon List</h1>
       <ul>
         {data?.pokemons.map((pokemon) => (
-          <li key={pokemon.id}>
-            {pokemon.name}
-          </li>
+         <div key={pokemon.id}>
+         <h2>{pokemon.name}</h2>
+         <Image src={pokemon.image} alt={pokemon.name} /> {/* 画像を表示 */}
+     </div>
         ))}
       </ul>
     </div>
