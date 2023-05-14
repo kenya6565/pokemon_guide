@@ -48,17 +48,40 @@ func (r *queryResolver) Pokemons(ctx context.Context, limit *int, offset *int) (
 		return nil, err
 	}
 
-	// make list from json data including pokeAPI
 	results := data["results"].([]interface{})
 	pokemons := make([]*model.Pokemon, len(results))
 	for i, r := range results {
 		result := r.(map[string]interface{})
-		// convert id type into int with atrconv.Atoi
 		id, _ := strconv.Atoi(result["url"].(string)[34 : len(result["url"].(string))-1])
-		pokemons[i] = &model.Pokemon{
-			ID:   fmt.Sprint(id),
-			Name: result["name"].(string),
+
+		// get pokemon details
+		url := fmt.Sprintf("https://pokeapi.co/api/v2/pokemon/%d", id)
+		resp, err := http.Get(url)
+		if err != nil {
+			return nil, err
 		}
+
+		var detail map[string]interface{}
+		body, err = ioutil.ReadAll(resp.Body)
+		if err != nil {
+			return nil, err
+		}
+
+		if err := json.Unmarshal(body, &detail); err != nil {
+			return nil, err
+		}
+
+		// the "sprites" field in the PokeAPI response contains image URLs
+		sprites := detail["sprites"].(map[string]interface{})
+		front_default := sprites["front_default"].(string)
+
+		pokemons[i] = &model.Pokemon{
+			ID:    fmt.Sprint(id),
+			Name:  result["name"].(string),
+			Image: front_default,
+		}
+
+		resp.Body.Close()
 	}
 
 	return pokemons, nil
