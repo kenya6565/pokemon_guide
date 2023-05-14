@@ -29,7 +29,7 @@ const PokemonsPage = () => {
         {data?.pokemons.map((pokemon) => (
          <div key={pokemon.id}>
          <h2>{pokemon.name}</h2>
-         <Image src={pokemon.image} alt={pokemon.name} /> {/* 画像を表示 */}
+         <Image src={pokemon.image} alt={pokemon.name} width={10} height={10} layout="responsive"/>
      </div>
         ))}
       </ul>
