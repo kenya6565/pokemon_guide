@@ -22,6 +22,16 @@ const PokemonsPage = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
+   // Check if data is present and contains pokemons
+   if (!data || !data.pokemons) {
+    return <p>No Pokemon available</p>
+  }
+
+  const pokemonRows = [];
+  for (let i = 0; i < data?.pokemons.length; i += 3) {
+    pokemonRows.push(data?.pokemons.slice(i, i + 3));
+  }
+
   return (
     <div>
       <h1>Pokémon List</h1>
@@ -29,7 +39,7 @@ const PokemonsPage = () => {
         {data?.pokemons.map((pokemon) => (
          <div key={pokemon.id}>
          <h2>{pokemon.name}</h2>
-         <Image src={pokemon.image} alt={pokemon.name} width={10} height={10} layout="responsive"/>
+         <Image src={pokemon.image} alt={pokemon.name} width={100} height={100}/>
      </div>
         ))}
       </ul>
