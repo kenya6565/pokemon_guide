@@ -38,11 +38,11 @@ const PokemonsPage = () => {
     {pokemonRows.map((pokemonRow, rowIndex) => (
       <div key={rowIndex} style={{display: "flex", justifyContent: "space-around", marginBottom: "1rem"}}>
         {pokemonRow.map((pokemon) => (
-          <div key={pokemon.id} style={{display: "flex", flexDirection: "column", alignItems: "center", padding: "1rem", background: "#fff", borderRadius: "12px", boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -1px rgba(0,0,0,0.06)", transition: "transform 0.3s ease-in-out"}}
+          <div key={pokemon.id} style={{display: "flex", flexDirection: "column", alignItems: "center", padding: "20px", background: "#eee", borderRadius: "12px", boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -1px rgba(0,0,0,0.06)", margin: "10px", transition: "transform 0.3s ease-in-out", width: "200px", height: "200px"}}
                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
-            <h2 style={{fontSize: "1.2rem", fontWeight: "600", marginBottom: "1rem", color: "black"}}>{pokemon.name}</h2>
+            <h2 style={{fontSize: "1.5rem", fontWeight: "700", marginBottom: "1rem", color: "black"}}>{pokemon.name}</h2>
             <div style={{width: "100px", height: "100px", position: "relative"}}>
               <Image src={pokemon.image} alt={pokemon.name} layout="fill" objectFit="contain"/>
             </div>
