@@ -38,7 +38,7 @@ const PokemonsPage = () => {
     {pokemonRows.map((pokemonRow, rowIndex) => (
       <div key={rowIndex} style={{display: "flex", justifyContent: "space-around", marginBottom: "1rem"}}>
         {pokemonRow.map((pokemon) => (
-          <div key={pokemon.id} style={{display: "flex", flexDirection: "column", alignItems: "center", padding: "20px", background: "#eee", borderRadius: "12px", boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -1px rgba(0,0,0,0.06)", margin: "10px", transition: "transform 0.3s ease-in-out", width: "200px", height: "200px"}}
+          <div key={pokemon.id} style={{display: "flex", flexDirection: "column", alignItems: "center", padding: "21px", background: "#eee", borderRadius: "12px", boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -1px rgba(0,0,0,0.06)", margin: "10px", transition: "transform 0.3s ease-in-out", width: "200px", height: "200px"}}
                onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
                onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
           >
