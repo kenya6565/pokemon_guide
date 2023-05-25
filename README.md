@@ -13,6 +13,7 @@
 - [Apollo Client](https://www.apollographql.com/docs/react/): GraphQLクライアント
 - [GraphQL](https://graphql.org/): データ取得のためのクエリ言語
 - [TypeScript](https://www.typescriptlang.org/): JavaScriptのスーパーセット
+- [Golang](https://golang.org/): バックエンドサービスの実装に使用
 - [Tailwind CSS](https://tailwindcss.com/): ユーティリティファーストのCSSフレームワーク
 - [Docker](https://www.docker.com/): アプリケーションのコンテナ化ツール
 
