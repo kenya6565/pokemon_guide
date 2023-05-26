@@ -55,27 +55,52 @@ const PokemonsPage = () => {
             ))}
           </div>
         ))}
-        <button
-          onClick={() => {
-            if (offsetStack.length > 1) {
-              // to avoid going back from the first page
-              const newOffsetStack = [...offsetStack];
-              newOffsetStack.pop(); // remove the current offset from the stack
-              setOffsetStack(newOffsetStack);
-              setOffset(newOffsetStack[newOffsetStack.length - 1]); // set the offset to the previous value
-            }
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            gap: '20px',
+            marginTop: '20px',
+            marginBottom: '20px',
           }}
         >
-          Prev
-        </button>
-        <button
-          onClick={() => {
-            setOffsetStack([...offsetStack, offset + 30]); // add the new offset to the stack
-            setOffset(offset + 30);
-          }}
-        >
-          Next
-        </button>
+          <button
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#4B5563',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              if (offsetStack.length > 1) {
+                const newOffsetStack = [...offsetStack];
+                newOffsetStack.pop();
+                setOffsetStack(newOffsetStack);
+                setOffset(newOffsetStack[newOffsetStack.length - 1]);
+              }
+            }}
+          >
+            Prev
+          </button>
+          <button
+            style={{
+              padding: '10px 20px',
+              backgroundColor: '#4B5563',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+            onClick={() => {
+              setOffsetStack([...offsetStack, offset + 30]);
+              setOffset(offset + 30);
+            }}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
