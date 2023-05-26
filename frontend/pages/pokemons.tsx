@@ -3,7 +3,6 @@ import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
 import Image from 'next/image';
 
-
 const GET_POKEMONS = gql`
   query GetPokemons($limit: Int, $offset: Int) {
     pokemons(limit: $limit, offset: $offset) {
@@ -22,9 +21,9 @@ const PokemonsPage = () => {
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
-   // Check if data is present and contains pokemons
-   if (!data || !data.pokemons) {
-    return <p>No Pokemon available</p>
+  // Check if data is present and contains pokemons
+  if (!data || !data.pokemons) {
+    return <p>No Pokemon available</p>;
   }
 
   const pokemonRows = [];
@@ -33,24 +32,26 @@ const PokemonsPage = () => {
   }
 
   return (
-    <div style={{width: "100%"}}>
-    <h1 style={{textAlign: "center", fontSize: "3rem", fontWeight: "bold", marginBottom: "2rem", color: "black"}}>Pokémon List</h1>
-    {pokemonRows.map((pokemonRow, rowIndex) => (
-      <div key={rowIndex} style={{display: "flex", justifyContent: "space-around", marginBottom: "1rem"}}>
-        {pokemonRow.map((pokemon) => (
-          <div key={pokemon.id} style={{display: "flex", flexDirection: "column", alignItems: "center", padding: "21px", background: "#eee", borderRadius: "12px", boxShadow: "0px 4px 6px -1px rgba(0,0,0,0.1), 0px 2px 4px -1px rgba(0,0,0,0.06)", margin: "10px", transition: "transform 0.3s ease-in-out", width: "200px", height: "200px"}}
-               onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-               onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
-          >
-            <h2 style={{fontSize: "1.5rem", fontWeight: "700", marginBottom: "1rem", color: "black"}}>{pokemon.name}</h2>
-            <div style={{width: "100px", height: "100px", position: "relative"}}>
-              <Image src={pokemon.image} alt={pokemon.name} layout="fill" objectFit="contain"/>
+    <div style={{ width: '100%' }}>
+      <h1 className="pokemonListTitle">Pokémon List</h1>
+      {pokemonRows.map((pokemonRow, rowIndex) => (
+        <div key={rowIndex} className="pokemonCardContainer">
+          {pokemonRow.map((pokemon) => (
+            <div key={pokemon.id} className="pokemonCard">
+              <h2 className="pokemonName">{pokemon.name}</h2>
+              <div className="pokemonImageContainer">
+                <Image
+                  src={pokemon.image}
+                  alt={pokemon.name}
+                  layout="fill"
+                  objectFit="contain"
+                />
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-    ))}
-  </div>
+          ))}
+        </div>
+      ))}
+    </div>
   );
 };
 
