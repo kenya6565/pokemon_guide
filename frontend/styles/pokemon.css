@@ -1,24 +1,52 @@
+/* App.css */
+.pokemonCardContainer {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 1rem;
+}
+
 .pokemonCard {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  background-color: white;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
-  margin-bottom: 20px;
+  background: #eee;
+  border-radius: 12px;
+  box-shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin: 10px;
+  transition: transform 0.3s ease-in-out;
   width: 200px;
-  height: 300px;
-  transition: 0.3s;
+  height: 200px;
 }
 
 .pokemonCard:hover {
   transform: scale(1.05);
 }
 
+.pokemonName {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+  color: black;
+}
+
+.pokemonImageContainer {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+/* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   .pokemonCard {
     background-color: #333;
     color: white;
-    box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
+    box-shadow: 0px 4px 6px -1px rgba(255, 255, 255, 0.1),
+      0px 2px 4px -1px rgba(255, 255, 255, 0.06);
+  }
+
+  .pokemonName {
+    color: white;
   }
 }

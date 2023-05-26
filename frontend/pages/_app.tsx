@@ -1,4 +1,5 @@
 import '@/styles/globals.css'
+import '../../frontend/styles/pokemon.css';
 import type { AppProps } from 'next/app'
 import { ApolloProvider } from '@apollo/client';
 import client from '../lib/apolloClient'; // Apolloクライアントの設定ファイル
