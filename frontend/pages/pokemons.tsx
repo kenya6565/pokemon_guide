@@ -21,7 +21,7 @@ const PokemonsPage = () => {
     variables: { limit: 30, offset: offset },
   });
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return <p>ポケモン取得中...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   // Check if data is present and contains pokemons
