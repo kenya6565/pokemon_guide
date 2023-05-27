@@ -15,8 +15,28 @@ const GET_POKEMONS = gql`
 `;
 
 const PokemonsPage = () => {
+  // ボタンの初期スタイルを設定
+  const buttonStyle = {
+    padding: '10px 20px',
+    backgroundColor: '#4B5563',
+    color: 'white',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+    transition: '0.3s', // ホバーエフェクトのアニメーション速度を設定
+  };
+
+  // ホバー時のスタイルを設定
+  const buttonHoverStyle = {
+    ...buttonStyle,
+    backgroundColor: '#6B7280',
+  };
+  
   const [offset, setOffset] = useState(0);
   const [offsetStack, setOffsetStack] = useState([0]);
+  // 状態変数を使用してボタンのスタイルを管理
+  const [prevButtonStyle, setPrevButtonStyle] = useState(buttonStyle);
+  const [nextButtonStyle, setNextButtonStyle] = useState(buttonStyle);
   const { loading, error, data } = useQuery<GetPokemonsQuery>(GET_POKEMONS, {
     variables: { limit: 30, offset: offset },
   });
