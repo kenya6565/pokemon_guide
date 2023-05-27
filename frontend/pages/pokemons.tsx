@@ -27,16 +27,16 @@ const PokemonsPage = () => {
   };
 
   // ホバー時のスタイルを設定
-  const buttonHoverStyle = {
+  const hoveredButtonStyle = {
     ...buttonStyle,
     backgroundColor: '#6B7280',
   };
-  
+
   const [offset, setOffset] = useState(0);
   const [offsetStack, setOffsetStack] = useState([0]);
   // 状態変数を使用してボタンのスタイルを管理
-  const [prevButtonStyle, setPrevButtonStyle] = useState(buttonStyle);
-  const [nextButtonStyle, setNextButtonStyle] = useState(buttonStyle);
+  const [isPrevButtonHovered, setIsPrevButtonHovered] = useState(false);
+  const [isNextButtonHovered, setIsNextButtonHovered] = useState(false);
   const { loading, error, data } = useQuery<GetPokemonsQuery>(GET_POKEMONS, {
     variables: { limit: 30, offset: offset },
   });
@@ -85,14 +85,7 @@ const PokemonsPage = () => {
           }}
         >
           <button
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#4B5563',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-            }}
+            style={isPrevButtonHovered ? hoveredButtonStyle : buttonStyle}
             onClick={() => {
               if (offsetStack.length > 1) {
                 const newOffsetStack = [...offsetStack];
@@ -101,22 +94,19 @@ const PokemonsPage = () => {
                 setOffset(newOffsetStack[newOffsetStack.length - 1]);
               }
             }}
+            onMouseEnter={() => setIsPrevButtonHovered(true)}
+            onMouseLeave={() => setIsPrevButtonHovered(false)}
           >
             Prev
           </button>
           <button
-            style={{
-              padding: '10px 20px',
-              backgroundColor: '#4B5563',
-              color: 'white',
-              border: 'none',
-              borderRadius: '5px',
-              cursor: 'pointer',
-            }}
+            style={isNextButtonHovered ? hoveredButtonStyle : buttonStyle}
             onClick={() => {
               setOffsetStack([...offsetStack, offset + 30]);
               setOffset(offset + 30);
             }}
+            onMouseEnter={() => setIsNextButtonHovered(true)}
+            onMouseLeave={() => setIsNextButtonHovered(false)}
           >
             Next
           </button>
