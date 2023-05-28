@@ -15,7 +15,6 @@ const GET_POKEMONS = gql`
 `;
 
 const PokemonsPage = () => {
-  // ボタンの初期スタイルを設定
   const buttonStyle = {
     padding: '10px 20px',
     backgroundColor: '#4B5563',
@@ -23,10 +22,10 @@ const PokemonsPage = () => {
     border: 'none',
     borderRadius: '5px',
     cursor: 'pointer',
-    transition: '0.3s', // ホバーエフェクトのアニメーション速度を設定
+    transition: '0.3s',
   };
 
-  // ホバー時のスタイルを設定
+  // style when hovering over
   const hoveredButtonStyle = {
     ...buttonStyle,
     backgroundColor: '#6B7280',
@@ -34,7 +33,6 @@ const PokemonsPage = () => {
 
   const [offset, setOffset] = useState(0);
   const [offsetStack, setOffsetStack] = useState([0]);
-  // 状態変数を使用してボタンのスタイルを管理
   const [isPrevButtonHovered, setIsPrevButtonHovered] = useState(false);
   const [isNextButtonHovered, setIsNextButtonHovered] = useState(false);
   const { loading, error, data } = useQuery<GetPokemonsQuery>(GET_POKEMONS, {
@@ -57,7 +55,6 @@ const PokemonsPage = () => {
   return (
     <>
       <div style={{ width: '100%' }}>
-        <h1 className="pokemonListTitle">Pokémon List</h1>
         {pokemonRows.map((pokemonRow, rowIndex) => (
           <div key={rowIndex} className="pokemonCardContainer">
             {pokemonRow.map((pokemon) => (
