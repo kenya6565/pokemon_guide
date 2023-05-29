@@ -2,6 +2,7 @@ import { GetPokemonsQuery } from '../src/generated/graphql';
 import { useQuery } from '@apollo/client';
 import { gql } from '@apollo/client';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 
 const GET_POKEMONS = gql`
@@ -55,6 +56,11 @@ const PokemonsPage = () => {
   return (
     <>
       <div style={{ width: '100%' }}>
+        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+          <Link href="/" legacyBehavior>
+            <a style={{ color: '#fff', fontSize: '20px' }}>Pokémon Pokedex</a>
+          </Link>
+        </div>
         {pokemonRows.map((pokemonRow, rowIndex) => (
           <div key={rowIndex} className="pokemonCardContainer">
             {pokemonRow.map((pokemon) => (
@@ -86,6 +92,7 @@ const PokemonsPage = () => {
             onClick={() => {
               if (offsetStack.length > 1) {
                 const newOffsetStack = [...offsetStack];
+                // offsetStack.pop();でもいいがコピーを作ってそれに対して処理をすることで安全性の確保をする
                 newOffsetStack.pop();
                 setOffsetStack(newOffsetStack);
                 setOffset(newOffsetStack[newOffsetStack.length - 1]);
@@ -99,6 +106,7 @@ const PokemonsPage = () => {
           <button
             style={isNextButtonHovered ? hoveredButtonStyle : buttonStyle}
             onClick={() => {
+              // [0, 30, 60, 90]
               setOffsetStack([...offsetStack, offset + 30]);
               setOffset(offset + 30);
             }}
