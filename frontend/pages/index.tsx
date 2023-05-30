@@ -9,6 +9,10 @@ const HomePage = () => {
         background: '#000000',
         height: '100vh',
         padding: '50px 0',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <h1
@@ -27,14 +31,21 @@ const HomePage = () => {
         Explore the amazing world of Pokémon with our interactive Pokédex. Click
         the button below to start!
       </p>
-      {/* <div style={{ margin: '0 auto', width: '200px', height: '200px' }}>
+      <div
+        style={{
+          position: 'relative',
+          width: '200px',
+          height: '200px',
+          marginBottom: '30px',
+        }}
+      >
         <Image
-          src="/path/to/pokemon/image.png" // replace with your own image path
+          src="/monsterball.png"
           alt="Pokemon"
           layout="fill"
           objectFit="contain"
         />
-      </div> */}
+      </div>
       <Link href="/pokemons" passHref>
         <div
           style={{
