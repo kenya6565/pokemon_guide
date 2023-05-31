@@ -70,9 +70,10 @@ const PokemonsPage = () => {
                   <Image
                     src={pokemon.image}
                     alt={pokemon.name}
-                    layout="fill"
+                    layout="constrained"
                     objectFit="contain"
-                    sizes="(max-width: 600px) 30vw, (max-width: 900px) 50vw, 100vw"
+                    width={500}
+                    height={300}
                   />
                 </div>
               </div>
