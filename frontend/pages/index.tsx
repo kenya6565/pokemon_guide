@@ -40,7 +40,7 @@ const HomePage = () => {
         }}
       >
         <Image
-          src="/monsterball.png"
+          src="/monster-ball.png"
           alt="Pokemon"
           layout="fill"
           objectFit="contain"
