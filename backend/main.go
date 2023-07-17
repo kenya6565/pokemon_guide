@@ -17,8 +17,10 @@ import (
 const defaultPort = "8080"
 
 func main() {
+	// create new graphql instance
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
+	// CORS setting
 	h := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
 		AllowCredentials: true,
@@ -44,8 +46,10 @@ func main() {
 				return events.APIGatewayProxyResponse{}, err
 			}
 
+			// use to write http response and status code
 			w := &responseWriter{}
 			h.ServeHTTP(w, r)
+			// return response from APIGateway
 			return events.APIGatewayProxyResponse{
 				StatusCode: w.statusCode,
 				Body:       string(w.body),
@@ -74,4 +78,8 @@ func (w *responseWriter) WriteHeader(statusCode int) {
 func (w *responseWriter) Write(body []byte) (int, error) {
 	w.body = body
 	return len(body), nil
+}
+
+func (w *responseWriter) Header() http.Header {
+	return w.ResponseWriter.Header()
 }
