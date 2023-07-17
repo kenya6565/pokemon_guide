@@ -1,15 +1,13 @@
 package main
 
 import (
-	"log"
 	"net/http"
-	"os"
+	"strings"
 
 	"github.com/99designs/gqlgen/graphql/handler"
-	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
-	"github.com/go-chi/chi"
-	"github.com/gorilla/websocket"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/kenya6565/pokemon_pokedex/graph"
 	"github.com/rs/cors"
 )
@@ -17,39 +15,51 @@ import (
 const defaultPort = "8080"
 
 func main() {
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = defaultPort
-	}
+	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	router := chi.NewRouter()
-
-	// Add CORS middleware around every request
-	// See https://github.com/rs/cors for full option listing
-	router.Use(cors.New(cors.Options{
+	h := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000"},
 		AllowCredentials: true,
 		Debug:            true,
-	}).Handler)
+	}).Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		switch r.URL.Path {
+		case "/query":
+			srv.ServeHTTP(w, r)
+		default:
+			playground.Handler("GraphQL playground", "/query").ServeHTTP(w, r)
+		}
+	}))
 
-	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
-	srv.AddTransport(&transport.Websocket{
-		Upgrader: websocket.Upgrader{
-			CheckOrigin: func(r *http.Request) bool {
-				// Check against your desired domains here
-				return r.Host == "example.org"
-			},
-			ReadBufferSize:  1024,
-			WriteBufferSize: 1024,
-		},
+	lambda.Start(func(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+		r, err := http.NewRequest(
+			strings.ToUpper(req.HTTPMethod),
+			req.Path,
+			strings.NewReader(req.Body),
+		)
+		if err != nil {
+			return events.APIGatewayProxyResponse{}, err
+		}
+
+		w := &responseWriter{}
+		h.ServeHTTP(w, r)
+		return events.APIGatewayProxyResponse{
+			StatusCode: w.statusCode,
+			Body:       string(w.body),
+		}, nil
 	})
+}
 
-	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
-	router.Handle("/query", srv)
+type responseWriter struct {
+	http.ResponseWriter
+	statusCode int
+	body       []byte
+}
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
-	err := http.ListenAndServe(":8080", router)
-	if err != nil {
-		panic(err)
-	}
+func (w *responseWriter) WriteHeader(statusCode int) {
+	w.statusCode = statusCode
+}
+
+func (w *responseWriter) Write(body []byte) (int, error) {
+	w.body = body
+	return len(body), nil
 }
