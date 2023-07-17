@@ -22,7 +22,7 @@ func main() {
 
 	// CORS setting
 	h := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowedOrigins:   []string{"http://localhost:3000"}, // この部分は本番環境に合わせて変更してください
 		AllowCredentials: true,
 		Debug:            true,
 	}).Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +52,11 @@ func main() {
 			// return response from APIGateway
 			return events.APIGatewayProxyResponse{
 				StatusCode: w.statusCode,
-				Body:       string(w.body),
+				Headers: map[string]string{
+					"Access-Control-Allow-Origin":      "https://pokemon-pokedex-jet.vercel.app",
+					"Access-Control-Allow-Credentials": "true",
+				},
+				Body: string(w.body),
 			}, nil
 		})
 	} else {
