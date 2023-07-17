@@ -1,7 +1,9 @@
 package main
 
 import (
+	"log"
 	"net/http"
+	"os"
 	"strings"
 
 	"github.com/99designs/gqlgen/graphql/handler"
@@ -30,23 +32,33 @@ func main() {
 		}
 	}))
 
-	lambda.Start(func(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-		r, err := http.NewRequest(
-			strings.ToUpper(req.HTTPMethod),
-			req.Path,
-			strings.NewReader(req.Body),
-		)
-		if err != nil {
-			return events.APIGatewayProxyResponse{}, err
-		}
+	if os.Getenv("AWS_EXECUTION_ENV") != "" {
+		// Lambda environment
+		lambda.Start(func(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+			r, err := http.NewRequest(
+				strings.ToUpper(req.HTTPMethod),
+				req.Path,
+				strings.NewReader(req.Body),
+			)
+			if err != nil {
+				return events.APIGatewayProxyResponse{}, err
+			}
 
-		w := &responseWriter{}
-		h.ServeHTTP(w, r)
-		return events.APIGatewayProxyResponse{
-			StatusCode: w.statusCode,
-			Body:       string(w.body),
-		}, nil
-	})
+			w := &responseWriter{}
+			h.ServeHTTP(w, r)
+			return events.APIGatewayProxyResponse{
+				StatusCode: w.statusCode,
+				Body:       string(w.body),
+			}, nil
+		})
+	} else {
+		// Local environment
+		log.Printf("connect to http://localhost:%s/ for GraphQL playground", defaultPort)
+		err := http.ListenAndServe(":"+defaultPort, h)
+		if err != nil {
+			panic(err)
+		}
+	}
 }
 
 type responseWriter struct {
