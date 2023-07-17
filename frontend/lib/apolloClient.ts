@@ -2,7 +2,7 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client';
 
 const apolloClient = new ApolloClient({
-  uri: 'http://localhost:8080/query', // GraphQL サーバーのエンドポイント
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT, // GraphQL サーバーのエンドポイント
   cache: new InMemoryCache(),
 });
 
