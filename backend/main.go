@@ -66,9 +66,9 @@ func main() {
 }
 
 type responseWriter struct {
-	http.ResponseWriter
 	statusCode int
 	body       []byte
+	header     http.Header
 }
 
 func (w *responseWriter) WriteHeader(statusCode int) {
@@ -80,6 +80,10 @@ func (w *responseWriter) Write(body []byte) (int, error) {
 	return len(body), nil
 }
 
+// h.ServeHTTP(w, r)メソッドでwをResponseWriterのいinterfaceで定義していてHeader()の記載が必須
 func (w *responseWriter) Header() http.Header {
-	return w.ResponseWriter.Header()
+	if w.header == nil {
+		w.header = make(http.Header)
+	}
+	return w.header
 }
