@@ -49,11 +49,11 @@ func main() {
 			// use to write http response and status code
 			w := &responseWriter{}
 			h.ServeHTTP(w, r)
-			// return response from APIGateway
+			// return response from Lambda to APIGateway
 			return events.APIGatewayProxyResponse{
 				StatusCode: w.statusCode,
 				Headers: map[string]string{
-					"Access-Control-Allow-Origin":      "https://pokemon-pokedex-jet.vercel.app",
+					"Access-Control-Allow-Origin":      " *",
 					"Access-Control-Allow-Credentials": "true",
 				},
 				Body: string(w.body),
