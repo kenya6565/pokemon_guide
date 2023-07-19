@@ -37,6 +37,7 @@ func main() {
 	if os.Getenv("AWS_EXECUTION_ENV") != "" {
 		// Lambda environment
 		lambda.Start(func(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+			log.Println("In Lambda environment. Received request with path: ", req.Path)
 			r, err := http.NewRequest(
 				strings.ToUpper(req.HTTPMethod),
 				req.Path,
@@ -61,12 +62,14 @@ func main() {
 		})
 	} else {
 		// Local environment
-		log.Printf("connect to http://localhost:%s/ for GraphQL playground", defaultPort)
+		log.Printf("In local environment. Connect to http://localhost:%s/ for GraphQL playground", defaultPort)
 		err := http.ListenAndServe(":"+defaultPort, h)
 		if err != nil {
 			panic(err)
 		}
 	}
+
+	log.Println("Application ended.")
 }
 
 type responseWriter struct {
