@@ -17,19 +17,24 @@ import (
 const defaultPort = "8080"
 
 func main() {
+	log.Println("Starting application...")
+
 	// create new graphql instance
 	srv := handler.NewDefaultServer(graph.NewExecutableSchema(graph.Config{Resolvers: &graph.Resolver{}}))
 
-	// CORS setting
+	// CORS setting and request hundling of GraphQL
 	h := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:3000"}, // この部分は本番環境に合わせて変更してください
+		AllowedOrigins:   []string{"http://localhost:3000", "https://pokemon-pokedex-jet.vercel.app"},
 		AllowCredentials: true,
 		Debug:            true,
 	}).Handler(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		log.Println("Received request on path: ", r.URL.Path)
 		switch r.URL.Path {
 		case "/query":
+			log.Println("Routing request to GraphQL handler...")
 			srv.ServeHTTP(w, r)
 		default:
+			log.Println("Routing request to GraphQL playground...")
 			playground.Handler("GraphQL playground", "/query").ServeHTTP(w, r)
 		}
 	}))
