@@ -52,15 +52,45 @@ func main() {
 				return events.APIGatewayProxyResponse{}, err
 			}
 
+			// Add headers and query string parameters to the request
+			r.Header = http.Header{}
+			for k, v := range req.MultiValueHeaders {
+				for _, v2 := range v {
+					r.Header.Add(k, v2)
+				}
+			}
+			q := r.URL.Query()
+			for k, v := range req.MultiValueQueryStringParameters {
+				for _, v2 := range v {
+					q.Add(k, v2)
+				}
+			}
+			r.URL.RawQuery = q.Encode()
+
 			// use to write http response and status code
 			w := &responseWriter{}
 			h.ServeHTTP(w, r)
+
+			// Convert http.Header to map[string]string
+			headers := make(map[string]string)
+			for name, values := range w.Header() {
+				name = http.CanonicalHeaderKey(name)
+				if len(values) > 0 {
+					headers[name] = values[0]
+				}
+			}
+
+			// Add CORS headers
+			headers["Access-Control-Allow-Origin"] = "*"
+			headers["Access-Control-Allow-Credentials"] = "true"
+
 			// return response from Lambda to APIGateway
 			return events.APIGatewayProxyResponse{
 				StatusCode: w.statusCode,
 				Headers: map[string]string{
-					"Access-Control-Allow-Origin":      " *",
+					"Access-Control-Allow-Origin":      "*",
 					"Access-Control-Allow-Credentials": "true",
+					"Content-Type":                     "application/json",
 				},
 				Body: string(w.body),
 			}, nil
