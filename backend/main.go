@@ -80,10 +80,6 @@ func main() {
 				}
 			}
 
-			// Add CORS headers
-			headers["Access-Control-Allow-Origin"] = "*"
-			headers["Access-Control-Allow-Credentials"] = "true"
-
 			// return response from Lambda to APIGateway
 			return events.APIGatewayProxyResponse{
 				StatusCode: w.statusCode,
