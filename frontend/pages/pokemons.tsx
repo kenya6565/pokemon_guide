@@ -40,7 +40,31 @@ const PokemonsPage = () => {
     variables: { limit: 30, offset: offset },
   });
 
-  if (loading) return <p>ポケモン取得中...</p>;
+  if (loading)
+    return (
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          height: '100vh',
+        }}
+      >
+        <div
+          style={{
+            border: '16px solid #f3f3f3',
+            borderRadius: '50%',
+            borderTop: '16px solid #3498db',
+            width: '120px',
+            height: '120px',
+            animation: 'spin 2s linear infinite',
+          }}
+        />
+        <p style={{ marginLeft: '20px', fontSize: '20px' }}>
+          Loading Pokemons...
+        </p>
+      </div>
+    );
   if (error) return <p>Error: {error.message}</p>;
 
   // Check if data is present and contains pokemons
@@ -58,7 +82,7 @@ const PokemonsPage = () => {
       <div style={{ width: '100%' }}>
         <div style={{ textAlign: 'center', marginBottom: '20px' }}>
           <Link href="/" legacyBehavior>
-            <a style={{ color: '#fff', fontSize: '20px' }}>Pokémon Pokedex</a>
+            <a style={{ color: '#fff', fontSize: '30px' }}>Pokémon Pokedex</a>
           </Link>
         </div>
         {pokemonRows.map((pokemonRow, rowIndex) => (
