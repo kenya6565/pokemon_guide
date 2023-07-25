@@ -68,7 +68,9 @@ func main() {
 			r.URL.RawQuery = q.Encode()
 
 			// use to write http response and status code
-			w := &responseWriter{}
+			// when successfully generated response, return 200
+			// when something went wrong, return its status code
+			w := &responseWriter{statusCode: 200}
 			h.ServeHTTP(w, r)
 
 			// Convert http.Header to map[string]string
@@ -80,15 +82,16 @@ func main() {
 				}
 			}
 
+			// Add additional headers
+			headers["Access-Control-Allow-Origin"] = "*"
+			headers["Access-Control-Allow-Credentials"] = "true"
+			headers["Content-Type"] = "application/json"
+
 			// return response from Lambda to APIGateway
 			return events.APIGatewayProxyResponse{
 				StatusCode: w.statusCode,
-				Headers: map[string]string{
-					"Access-Control-Allow-Origin":      "*",
-					"Access-Control-Allow-Credentials": "true",
-					"Content-Type":                     "application/json",
-				},
-				Body: string(w.body),
+				Headers:    headers,
+				Body:       string(w.body),
 			}, nil
 		})
 	} else {
