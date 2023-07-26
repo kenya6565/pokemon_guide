@@ -14,8 +14,10 @@
 - [GraphQL](https://graphql.org/): データ取得のためのクエリ言語
 - [TypeScript](https://www.typescriptlang.org/): JavaScriptのスーパーセット
 - [Golang](https://golang.org/): バックエンドサービスの実装に使用
-- [Tailwind CSS](https://tailwindcss.com/): ユーティリティファーストのCSSフレームワーク
 - [Docker](https://www.docker.com/): アプリケーションのコンテナ化ツール
+- [Vercel](https://vercel.com/): フロントエンドのデプロイ
+- [AWS Lambda](https://aws.amazon.com/lambda/): バックエンドのデプロイ
+- [AWS API Gateway](https://aws.amazon.com/api-gateway/): HTTPリクエストのルーティング
 
 ## インストール
 
@@ -42,18 +44,12 @@ docker run -p 3000:3000 pokemon-app
 
 このコマンドを実行後、ブラウザで http://localhost:3000 にアクセスするとアプリケーションが表示されます。
 
-## ビルド
+## 本番環境
 
-以下のコマンドでプロジェクトをビルドできます。
+このプロジェクトは本番環境で運用されています。以下は本番環境の構築に関する情報です。
 
-```sh
-npm run build
-```
+- **フロントエンド**: [Next.js](https://nextjs.org/) で作成されたフロントエンドアプリケーションは、[Vercel](https://vercel.com/) により自動的にデプロイされます。
+- **バックエンド**: [Golang](https://golang.org/) で作成されたGraphQLサーバーは、[AWS Lambda](https://aws.amazon.com/lambda/) を使用してデプロイされます。 AWS Lambdaのセットアップとデプロイは、AWSのマネージメントコンソールを通じて手動で行われます。
+- **通信**: バックエンドとフロントエンド間の通信は、[AWS API Gateway](https://aws.amazon.com/api-gateway/) を使用してHTTPリクエストにより実現されています。
 
-## デプロイ
-
-以下のコマンドでプロジェクトをデプロイできます。
-
-```sh
-npm start
-```
+この設定により、フロントエンドとバックエンドのスケーリングと維持が容易になり、安定したサービスを提供できます。
